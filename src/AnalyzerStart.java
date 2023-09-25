@@ -1,5 +1,3 @@
-package TextAnalyzer;
-
 public class AnalyzerStart {
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -13,3 +11,5 @@ public class AnalyzerStart {
         }
     }
 }
+
+//Texto01.txt Texto02.txt Texto03.txt Texto04.txt TextoValidacao01.txt TextoValidacao02.txt

@@ -1,7 +1,8 @@
-package TextAnalyzer;
+import java.util.List;
+import java.util.Map;
 
 public class AnalyzerController {
-    private String[] fileNames;
+    private final String[] fileNames;
 
     public AnalyzerController(String[] fileNames) {
         this.fileNames = fileNames;
@@ -9,12 +10,13 @@ public class AnalyzerController {
 
     public void processFiles() {
         try {
-            AnalyzerReader reader = new AnalyzerReader();
-            AnalyzerWriter writer = new AnalyzerWriter();
-
             for (String fileName : fileNames) {
+                AnalyzerReader reader = new AnalyzerReader(".\\text\\");
                 reader.readFile(fileName);
-                writer.writeFile(fileName);
+                Map<String, List<String>> adjacency = reader.getAdjacency();
+
+                AnalyzerWriter writer = new AnalyzerWriter(".\\csv\\");
+                writer.writeFile(fileName, adjacency);
             }
         } catch (Exception e) {
             System.err.println("Error during file processing:");
