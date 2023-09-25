@@ -1,25 +1,29 @@
 package TextAnalyzer;
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AnalyzerWriter {
     public void writeFile(String fileName) {
         try {
             AnalyzerReader reader = new AnalyzerReader();
-            reader.readFile(fileName); // Chama o método para atualizar o mapa interno
+            reader.readFile(fileName);
 
-            Map<String, List<String>> adjacencies = reader.getAdjacencies(); // Obtém o mapa interno
+            Map<String, Set<String>> adjacencies = reader.getAdjacencies();
+
+            // Use a classe OrderMap para ordenar e remover duplicatas
+            Map<String, List<String>> orderedAdjacencies = OrderMap.orderAndRemoveDuplicatesFromSet(adjacencies);
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName.replace(".txt", "_digraph.csv")))) {
-                for (Map.Entry<String, List<String>> entry : adjacencies.entrySet()) {
+                for (Map.Entry<String, List<String>> entry : orderedAdjacencies.entrySet()) {
                     String word = entry.getKey();
+                    
                     List<String> adjacenciesList = entry.getValue();
 
-                    for (String adjacent : adjacenciesList) {
-                        writer.write(word + "," + adjacent + "\n");
+                    if (word != null && !word.isEmpty()) {
+                        String adjacenciesString = String.join(", ", adjacenciesList);
+                        writer.write(word + ", " + adjacenciesString + "\n");
                     }
                 }
                 System.out.println("CSV file generated successfully: " + fileName.replace(".txt", "_digraph.csv"));

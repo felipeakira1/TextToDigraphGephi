@@ -1,14 +1,10 @@
 package TextAnalyzer;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AnalyzerReader {
-    private Map<String, List<String>> adjacencies;
+    private Map<String, Set<String>> adjacencies;
 
     public AnalyzerReader() {
         adjacencies = new HashMap<>();
@@ -26,9 +22,9 @@ public class AnalyzerReader {
                 for (String word : wordsInLine) {
                     word = word.toLowerCase(); // Convert to lowercase to avoid case sensitivity
 
-                    if (previousWord != null) {
+                    if (previousWord != null && !previousWord.isEmpty()) {
                         // Add the word to the adjacency list of the previous word
-                        adjacencies.computeIfAbsent(previousWord, k -> new ArrayList<>()).add(word);
+                        adjacencies.computeIfAbsent(previousWord, k -> new LinkedHashSet<>()).add(word);
                     }
 
                     previousWord = word;
@@ -40,7 +36,8 @@ public class AnalyzerReader {
         }
     }
 
-    public Map<String, List<String>> getAdjacencies() {
+    public Map<String, Set<String>> getAdjacencies() {
         return adjacencies;
     }
 }
+
