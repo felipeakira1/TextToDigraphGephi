@@ -35,8 +35,8 @@ public class AnalyzerWriter {
                     List<String> adjacenciesList = entry.getValue();
 
                     if (word != null && !word.isEmpty()) {
-                        String adjacenciesString = String.join(", ", adjacenciesList);
-                        writer.write(word + ", " + adjacenciesString + "\n");
+                        String adjacenciesString = String.join(",", adjacenciesList);
+                        writer.write(word + "," + adjacenciesString + "\n");
                     }
                 }
                 System.out.println("CSV file generated successfully: " + fileName.replace(".txt", "_digraph.csv"));
