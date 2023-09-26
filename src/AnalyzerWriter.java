@@ -1,33 +1,42 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * Class: AnalyzerWriter
+ * @author Miguel Donanzam - m260851@dac.unicamp.br
+ * @author Julio Morino - j173434@dac.unicamp.br
+ */
+
 public class AnalyzerWriter {
     private final String filePath;
 
+    /**
+     * @param filePath stores the path to the directory where the created .csv files should be stored.
+     */
     public AnalyzerWriter(String filePath) {
         this.filePath = filePath;
     }
 
-    public void writeFile(String fileName, Map<String, List<String>> adjacency) {
+    public void writeFile(String fileName) {
         try {
-            Set<String> writtenWords = new HashSet<>(); // Conjunto para manter o controle das palavras já escritas
+            AnalyzerReader reader = new AnalyzerReader(".\\files\\text\\");
+            reader.readFile(fileName);
+
+            Map<String, Set<String>> adjacency = reader.getAdjacency();
+
+            // Use a classe OrderMap para ordenar e remover duplicatas
+            Map<String, List<String>> orderedAdjacencies = OrderMap.orderAndRemoveDuplicatesFromSet(adjacency);
 
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath + fileName.replace(".txt", "_digraph.csv")))) {
-                for (Map.Entry<String, List<String>> entry : adjacency.entrySet()) {
+                for (Map.Entry<String, List<String>> entry : orderedAdjacencies.entrySet()) {
                     String word = entry.getKey();
+                    boolean isFirstWord = true;
+
                     List<String> adjacenciesList = entry.getValue();
 
-                    // Verifica se a palavra já foi escrita na primeira coluna
-                    if (!writtenWords.contains(word)) {
-                        for (String adjacent : adjacenciesList) {
-                            writer.write(word + "," + adjacent + "\n");
-                        }
-                        writtenWords.add(word); // Adiciona a palavra ao conjunto de palavras escritas
-                    } else {
-                        // Se a palavra já foi escrita, escreva apenas os adjacentes
-                        for (String adjacent : adjacenciesList) {
-                            writer.write("," + adjacent + "\n");
-                        }
+                    if (word != null && !word.isEmpty()) {
+                        String adjacenciesString = String.join(", ", adjacenciesList);
+                        writer.write(word + ", " + adjacenciesString + "\n");
                     }
                 }
                 System.out.println("CSV file generated successfully: " + fileName.replace(".txt", "_digraph.csv"));
