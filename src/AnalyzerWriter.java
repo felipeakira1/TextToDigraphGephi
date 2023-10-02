@@ -5,6 +5,7 @@ import java.util.*;
  * Class: AnalyzerWriter
  * @author Miguel Donanzam - m260851@dac.unicamp.br
  * @author Julio Morino - j173434@dac.unicamp.br
+ * @author Felipe Akira - f172885@dac.unicamp.br
  */
 
 public class AnalyzerWriter {
@@ -43,6 +44,7 @@ public class AnalyzerWriter {
             }
         } catch (Exception e) {
             System.err.println("Error while writing the file: " + fileName.replace(".txt", "_digraph.csv"));
+            System.err.println("Error details: " + e.getMessage());
             e.printStackTrace();
         }
     }

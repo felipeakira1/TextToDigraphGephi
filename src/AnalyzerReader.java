@@ -1,5 +1,7 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.FileReader;
+import java.io.FileNotFoundException;
 import java.text.Normalizer;
 import java.util.*;
 
@@ -7,6 +9,7 @@ import java.util.*;
  * Class: AnalyzerReader
  * @author Miguel Donanzam - m260851@dac.unicamp.br
  * @author Julio Morino - j173434@dac.unicamp.br
+ * @author Felipe Akira - f172885@dac.unicamp.br
  */
 
 public class AnalyzerReader {
@@ -43,9 +46,16 @@ public class AnalyzerReader {
                     previousWord = word;
                 }
             }
-        } catch (Exception e) {
-            System.err.println("Error while reading the file: " + fileName);
+        } catch(FileNotFoundException e) {
+        	System.err.println("File not found: " + fileName);
+        } catch (IOException e) {
+        	System.err.println("Error while reading the file: " + fileName);
+            System.err.println("Error details: " + e.getMessage());
             e.printStackTrace();
+        } catch (Exception e) {
+        	System.err.println("An unexpected error ocurred while reading the file: " + fileName);
+        	System.err.println("Error details: " + e.getMessage());
+        	e.printStackTrace();
         }
     }
 
@@ -57,19 +67,14 @@ public class AnalyzerReader {
     }
 
     public static String[] filterLine(String[] array) {
-        String[] resultado = new String[array.length];
-
+        String[] result = new String[array.length];
         for (int i = 0; i < array.length; i++) {
-            String texto = array[i];
-
-            texto = Normalizer.normalize(texto, Normalizer.Form.NFD);
-            texto = texto.replaceAll("\\p{InCombiningDiacriticalMarks}", "");
-
-            texto = texto.replaceAll("[^\\\\sa-zA-Z0-9]", "");
-
-            resultado[i] = texto;
+            String text = array[i];
+            text = Normalizer.normalize(text, Normalizer.Form.NFD);
+            text = text.replaceAll("\\p{InCombiningDiacriticalMarks}", "");
+            text = text.replaceAll("[^\\\\sa-zA-Z0-9]", "");
+            result[i] = text;
         }
-
-        return resultado;
+        return result;
     }
 }
