@@ -5,6 +5,7 @@ import java.util.*;
  * Class: AnalyzerWriter
  * @author Miguel Donanzam - m260851@dac.unicamp.br
  * @author Julio Morino - j173434@dac.unicamp.br
+ * @author Felipe Akira - f172885@dac.unicamp.br
  */
 
 public class AnalyzerWriter {
@@ -41,8 +42,21 @@ public class AnalyzerWriter {
                 }
                 System.out.println("CSV file generated successfully: " + fileName.replace(".txt", "_digraph.csv"));
             }
+        } catch(FileNotFoundException e) {
+        	System.err.println("File not found: " + fileName);
+            System.err.println("More details: ");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error reading the file: " + fileName);
+            System.err.println("More details: ");
+            e.printStackTrace();
+        } catch (NullPointerException e) {
+            System.err.println("Invalid file name: " + fileName);
+            System.err.println("More details: ");
+            e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("Error while writing the file: " + fileName.replace(".txt", "_digraph.csv"));
+            System.err.println("An error has ocurred. ");
+            System.err.println("More details: ");
             e.printStackTrace();
         }
     }

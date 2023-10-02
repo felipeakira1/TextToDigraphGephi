@@ -3,6 +3,7 @@
  * Class: AnalyzerController
  * @author Miguel Donanzam - m260851@dac.unicamp.br
  * @author Julio Morino - j173434@dac.unicamp.br
+ * @author Felipe Akira - f172885@dac.unicamp.br
  */
 
 public class AnalyzerController {
