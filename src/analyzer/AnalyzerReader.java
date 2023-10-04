@@ -1,8 +1,9 @@
+package analyzer;
+
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
-import java.text.Normalizer;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 /**
@@ -48,20 +49,14 @@ public class AnalyzerReader {
             }
         } catch(FileNotFoundException e) {
         	System.err.println("File not found: " + fileName);
-            System.err.println("More details: ");
-            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println("Error reading the file: " + fileName);
-            System.err.println("More details: ");
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            System.err.println("Invalid file name: " + fileName);
-            System.err.println("More details: ");
+        	System.err.println("Error while reading the file: " + fileName);
+            System.err.println("Error details: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            System.err.println("An error has ocurred. ");
-            System.err.println("More details: ");
-            e.printStackTrace();
+        	System.err.println("An unexpected error ocurred while reading the file: " + fileName);
+        	System.err.println("Error details: " + e.getMessage());
+        	e.printStackTrace();
         }
     }
 
@@ -74,18 +69,11 @@ public class AnalyzerReader {
 
     public static String[] filterLine(String[] array) {
         String[] result = new String[array.length];
-
         for (int i = 0; i < array.length; i++) {
             String text = array[i];
-
-            text = Normalizer.normalize(text, Normalizer.Form.NFD);
-            text = text.replaceAll("\\p{InCombiningDiacriticalMarks}", "");
-
-            text = text.replaceAll("[^\\\\sa-zA-Z0-9]", "");
-
+            text = text.replaceAll("[^\\\\s\\p{L}\\p{M}a-zA-Z0-9]", "");
             result[i] = text;
         }
-
         return result;
     }
 }
